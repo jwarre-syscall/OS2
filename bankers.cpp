@@ -1,32 +1,40 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 int main() 
 {
-    int n, m; // n = number of processes, m = number of resources
-    cout << "Enter number of processes: ";
-    cin >> n;
-    cout << "Enter number of resources: ";
-    cin >> m;
+    int n, m;
+
+    // Open the input file
+    string filename;
+    cout << "Enter input filename: ";
+    cin >> filename;
+    ifstream infile(filename);
+    
+    if (!infile) {
+        cerr << "Error: could not open input.txt\n";
+        return 1;
+    }
+
+    // Read number of processes and resources
+    infile >> n >> m;
 
     vector<vector<int>> alloc(n, vector<int>(m));
     vector<vector<int>> max(n, vector<int>(m));
     vector<int> avail(m);
 
-    cout << "Enter Allocation Matrix:\n";
     for (int i = 0; i < n; i++)
         for (int j = 0; j < m; j++)
-            cin >> alloc[i][j];
+            infile >> alloc[i][j];
 
-    cout << "Enter Maximum Matrix:\n";
     for (int i = 0; i < n; i++)
         for (int j = 0; j < m; j++)
-            cin >> max[i][j];
+            infile >> max[i][j];
 
-    cout << "Enter Available Resources:\n";
     for (int j = 0; j < m; j++)
-        cin >> avail[j];
+        infile >> avail[j];
 
     // Calculate Need Matrix
     vector<vector<int>> need(n, vector<int>(m));
